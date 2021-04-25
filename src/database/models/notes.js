@@ -18,15 +18,24 @@ module.exports = (sequelize, DataTypes) => {
     {
       user_id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        validate: {
+          isInt: true,
+          allowNull: false,
+        },
       },
       note_title: {
         type: DataTypes.STRING,
-        allowNull: false,
+        validate: {
+          isAlphanumeric: true,
+          allowNull: false,
+        },
       },
       note_text: {
         type: DataTypes.TEXT,
-        allowNull: false,
+        validate: {
+          isAlphanumeric: true,
+          allowNull: false,
+        },
       },
     },
     {
