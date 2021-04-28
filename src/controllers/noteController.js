@@ -3,6 +3,7 @@ const Notes = db.Notes;
 
 const store = async (req, res) => {
   try {
+    console.log(req.body);
     const save = await Notes.create(req.body);
     res.json(save).status(200);
   } catch (error) {
@@ -46,14 +47,16 @@ const show = async (req, res) => {
 
 const update = (req, res) => {
   Notes.findByPk(req.params.id)
-    .then((emp) => {
-      if (emp) {
-        emp.update(req.body);
-        msg = emp;
+    .then((value) => {
+      if (value) {
+        value.update(req.body);
+        result = value.dataValues;
+        res.json({ ...result });
       } else {
-        msg = `${req.params.id} not found in db`;
+        result = `${req.params.id} not found in db`;
+        res.json({ msg: result });
       }
-      res.json({ message: msg });
+      // res.json({ result });
     })
     .catch((err) => {
       res.json({ msg: err.message });
@@ -67,13 +70,14 @@ const destroy = (req, res) => {
       if (row) {
         row.destroy();
         msg = "success deleted";
+        res.status(200).json({ message: msg });
       } else {
         msg = `${req.params.id} not found in db`;
+        res.status(404).json({ message: msg });
       }
-      res.json({ message: msg });
     })
     .catch((err) => {
-      res.json({ message: err.message });
+      res.status(404).json({ message: err.message });
     });
 };
 
